@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Range Prediction</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .input-field {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            color: white;
+            padding-right: 2.5rem;
+        }
+
+        .input-field:focus {
+            border-color: #2563eb;
+            /* Blue 600 - Matches User Request */
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Custom Dropdown Styles */
+        .dropdown-wrapper {
+            position: relative;
+        }
+
+        .dropdown-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #1e293b;
+            border: 1px solid #475569;
+            border-radius: 0.5rem;
+            margin-top: 0.25rem;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 50;
+            display: none;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        }
+
+        .dropdown-list.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background 0.15s;
+            border-bottom: 1px solid #334155;
+            color: #e2e8f0;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background: #2563eb;
+            /* Blue 600 */
+            color: white;
+        }
+
+        .dropdown-item.selected {
+            background: #2563eb;
+            /* Blue 600 */
+            color: white;
+        }
+
+        /* Scrollbar styling */
+        .dropdown-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .dropdown-list::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+
+        .dropdown-list::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 to-slate-800">
+
+    <div class="glass-panel w-full max-w-2xl rounded-2xl shadow-2xl p-8 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-indigo-500"></div>
+
+        <h1
+            class="text-3xl font-bold text-center mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
+            EV Range Predictor
+        </h1>
+        <p class="text-slate-400 text-center mb-8">Estimate your electric vehicle's range with AI</p>
+
+        <form action="/predict" method="post" class="space-y-6" autocomplete="off">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Make Dropdown -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">Make</label>
+                    <select id="makeSelect" name="Make" class="hidden" required>
+                        <option value="" disabled selected></option>
+                    </select>
+
+                    <div class="dropdown-wrapper">
+                        <div class="relative">
+                            <input type="text" id="makeInput" placeholder="Select Make" readonly
+                                class="input-field w-full px-4 py-3 rounded-xl transition-all cursor-pointer bg-slate-800 focus:bg-slate-700">
+                            <div
+                                class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div id="makeList" class="dropdown-list"></div>
+                    </div>
+                </div>
+
+                <!-- Model Dropdown -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">Model</label>
+                    <select id="modelSelect" name="Model" class="hidden" required>
+                        <option value="" disabled selected></option>
+                    </select>
+
+                    <div class="dropdown-wrapper">
+                        <div class="relative">
+                            <input type="text" id="modelInput" placeholder="Select Model" disabled
+                                class="input-field w-full px-4 py-3 rounded-xl transition-all opacity-50 cursor-not-allowed">
+                            <div
+                                class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div id="modelList" class="dropdown-list"></div>
+                    </div>
+                </div>
+
+                <!-- Model Year Dropdown -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">Model Year</label>
+                    <select id="yearSelect" name="Model Year" class="hidden" required>
+                        <option value="" disabled selected></option>
+                    </select>
+
+                    <div class="dropdown-wrapper">
+                        <div class="relative">
+                            <input type="text" id="yearInput" placeholder="Select Year" disabled
+                                class="input-field w-full px-4 py-3 rounded-xl transition-all opacity-50 cursor-not-allowed">
+                            <div
+                                class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div id="yearList" class="dropdown-list"></div>
+                    </div>
+                </div>
+
+                <!-- EV Type Dropdown -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">EV Type</label>
+                    <select id="evTypeSelect" name="Electric Vehicle Type" class="hidden" required>
+                        <option value="" disabled selected></option>
+                    </select>
+
+                    <div class="dropdown-wrapper">
+                        <div class="relative">
+                            <input type="text" id="evTypeInput" placeholder="Select EV Type" readonly
+                                class="input-field w-full px-4 py-3 rounded-xl transition-all cursor-pointer bg-slate-800 focus:bg-slate-700">
+                            <div
+                                class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div id="evTypeList" class="dropdown-list"></div>
+                    </div>
+                </div>
+
+                <!-- Legislative District Dropdown -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">Legislative District</label>
+                    <select id="districtSelect" name="Legislative District" class="hidden" required>
+                        <option value="" disabled selected></option>
+                    </select>
+
+                    <div class="dropdown-wrapper">
+                        <div class="relative">
+                            <input type="text" id="districtInput" placeholder="Select District" readonly
+                                class="input-field w-full px-4 py-3 rounded-xl transition-all cursor-pointer bg-slate-800 focus:bg-slate-700">
+                            <div
+                                class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div id="districtList" class="dropdown-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit"
+                class="btn-primary w-full py-4 rounded-xl font-bold text-white text-lg mt-8 shadow-lg">
+                Predict Range
+            </button>
+        </form>
+
+        {% if prediction_text %}
+        <div class="mt-8 p-6 bg-slate-800/50 rounded-xl border border-blue-500/20 text-center animate-pulse shadow-2xl">
+            <p class="text-slate-400 text-sm uppercase tracking-wider mb-1">Estimated Range</p>
+            <h2 class="text-4xl font-bold text-blue-400">{{ prediction_text }} <span
+                    class="text-lg text-slate-500">miles</span></h2>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Data Context
+        const dataMap = {{ data_map | tojson | safe }};
+        const evTypes = {{ ev_types | tojson | safe }};
+        const districts = {{ districts | tojson | safe }};
+
+        const preSelected = {
+            make: "{{ selected_make }}",
+            model: "{{ selected_model }}",
+            year: "{{ selected_year }}",
+            evType: "{{ selected_ev_type }}",
+            district: "{{ selected_district }}"
+        };
+
+        // --- Reusable Dropdown Logic ---
+        class CustomDropdown {
+            constructor(inputId, listId, selectId, options = [], onSelectCallback = null) {
+                this.input = document.getElementById(inputId);
+                this.list = document.getElementById(listId);
+                this.select = document.getElementById(selectId);
+                this.options = options;
+                this.onSelectCallback = onSelectCallback;
+                this.init();
+            }
+
+            init() {
+                // Populate List
+                this.renderList(this.options);
+
+                // Event: Toggle List on Click
+                this.input.addEventListener('click', (e) => {
+                    if (this.input.disabled) return;
+                    e.stopPropagation(); // Prevent closing immediately
+                    this.closeAllDropdowns(this.list); // Close others
+
+                    if (this.list.classList.contains('show')) {
+                        this.list.classList.remove('show');
+                        this.input.setAttribute('readonly', true);
+                    } else {
+                        this.list.classList.add('show');
+                        this.input.removeAttribute('readonly');
+                        this.input.focus();
+                    }
+                    this.renderList(this.options);
+                });
+
+                // Event: Typing Filter
+                this.input.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase();
+                    const filtered = this.options.filter(opt => String(opt).toLowerCase().includes(query));
+                    this.renderList(filtered);
+                    this.list.classList.add('show');
+                });
+
+                // Close on outside click
+                document.addEventListener('click', (e) => {
+                    if (!this.input.contains(e.target) && !this.list.contains(e.target)) {
+                        this.list.classList.remove('show');
+                        // Reset to readonly to look like a "box" again until clicked
+                        this.input.setAttribute('readonly', true);
+                    }
+                });
+            }
+
+            renderList(items) {
+                this.list.innerHTML = '';
+                if (items.length === 0) {
+                    const div = document.createElement('div');
+                    div.className = 'dropdown-item text-slate-500 cursor-default';
+                    div.textContent = 'No results';
+                    this.list.appendChild(div);
+                } else {
+                    items.forEach(item => {
+                        const div = document.createElement('div');
+                        div.className = 'dropdown-item';
+                        div.textContent = item;
+
+                        // Highlight selected
+                        if (String(item) === this.input.value) {
+                            div.classList.add('selected');
+                        }
+
+                        div.onclick = (e) => {
+                            e.stopPropagation();
+                            this.selectItem(item);
+                        };
+                        this.list.appendChild(div);
+                    });
+                }
+            }
+
+            selectItem(value) {
+                this.input.value = value;
+                this.list.classList.remove('show');
+                this.input.setAttribute('readonly', true); // Lock it back
+
+                // Update hidden select
+                this.updateHiddenSelect(value);
+
+                if (this.onSelectCallback) this.onSelectCallback(value);
+            }
+
+            updateHiddenSelect(value) {
+                this.select.innerHTML = ''; // Clear prev
+                const opt = document.createElement('option');
+                opt.value = value;
+                opt.text = value;
+                opt.selected = true;
+                this.select.appendChild(opt);
+            }
+
+            setOptions(newOptions) {
+                this.options = newOptions;
+                this.renderList(newOptions);
+            }
+
+            enable() {
+                this.input.disabled = false;
+                this.input.classList.remove('opacity-50', 'cursor-not-allowed');
+                this.input.placeholder = "Select or Type...";
+            }
+
+            disable() {
+                this.input.disabled = true;
+                this.input.classList.add('opacity-50', 'cursor-not-allowed');
+                this.input.value = '';
+                this.input.placeholder = "Select Previous First";
+                this.options = [];
+                this.renderList([]);
+            }
+
+            setValue(val) {
+                if (val && val !== 'None' && val !== '0' && val !== '0.0') {
+                    this.input.value = val;
+                    this.updateHiddenSelect(val);
+                }
+            }
+
+            closeAllDropdowns(exclude) {
+                document.querySelectorAll('.dropdown-list').forEach(list => {
+                    if (list !== exclude) list.classList.remove('show');
+                });
+            }
+        }
+
+        // --- Initialization ---
+
+        const makeDropdown = new CustomDropdown('makeInput', 'makeList', 'makeSelect', Object.keys(dataMap).sort(), onMakeChange);
+        const modelDropdown = new CustomDropdown('modelInput', 'modelList', 'modelSelect', [], onModelChange);
+        const yearDropdown = new CustomDropdown('yearInput', 'yearList', 'yearSelect', []);
+
+        const evTypeDropdown = new CustomDropdown('evTypeInput', 'evTypeList', 'evTypeSelect', evTypes);
+        const districtDropdown = new CustomDropdown('districtInput', 'districtList', 'districtSelect', districts);
+
+        // --- Cascading Logic ---
+
+        function onMakeChange(selectedMake) {
+            // Reset downstream
+            modelDropdown.disable();
+            yearDropdown.disable();
+
+            if (dataMap[selectedMake]) {
+                const models = Object.keys(dataMap[selectedMake]).sort();
+                modelDropdown.setOptions(models);
+                modelDropdown.enable();
+            }
+        }
+
+        function onModelChange(selectedModel) {
+            const selectedMake = document.getElementById('makeSelect').value;
+            yearDropdown.disable();
+
+            if (selectedMake && dataMap[selectedMake] && dataMap[selectedMake][selectedModel]) {
+                const years = dataMap[selectedMake][selectedModel];
+                yearDropdown.setOptions(years);
+                yearDropdown.enable();
+            }
+        }
+
+        // --- Restore Previous State ---
+        if (preSelected.make && preSelected.make !== "None") {
+            makeDropdown.setValue(preSelected.make);
+            // Trigger make change manually to populate models
+            if (dataMap[preSelected.make]) {
+                const models = Object.keys(dataMap[preSelected.make]).sort();
+                modelDropdown.setOptions(models);
+                modelDropdown.enable();
+
+                if (preSelected.model && preSelected.model !== "None") {
+                    modelDropdown.setValue(preSelected.model);
+
+                    // Trigger model change
+                    const years = dataMap[preSelected.make][preSelected.model];
+                    if (years) {
+                        yearDropdown.setOptions(years);
+                        yearDropdown.enable();
+                        yearDropdown.setValue(preSelected.year);
+                    }
+                }
+            }
+        }
+
+        evTypeDropdown.setValue(preSelected.evType);
+        districtDropdown.setValue(preSelected.district);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,166 @@
+[2025-12-19 19:40:48,516: INFO: main: >>>>>> stage Data Ingestion stage started <<<<<<]
+[2025-12-19 19:41:46,889: INFO: main: >>>>>> stage Data Ingestion stage started <<<<<<]
+[2025-12-19 19:41:46,893: INFO: data_ingestion: File already exists of size: ~ 31736 KB]
+[2025-12-19 19:41:46,893: INFO: data_ingestion: File is not a zip file, skipping extraction.]
+[2025-12-19 19:41:46,894: INFO: main: >>>>>> stage Data Ingestion stage completed <<<<<<
+
+x==========x]
+[2025-12-19 19:41:46,894: INFO: main: >>>>>> stage Data Transformation stage started <<<<<<]
+[2025-12-19 19:41:47,622: INFO: data_transformation: Read data completed]
+[2025-12-19 19:41:47,623: INFO: data_transformation: Obtaining preprocessing object]
+[2025-12-19 19:41:47,778: INFO: data_transformation: Saved preprocessing object.]
+[2025-12-19 19:41:47,780: INFO: data_transformation: Splitting data into train and test sets]
+[2025-12-19 19:41:47,902: INFO: data_transformation: Data transformation completed]
+[2025-12-19 19:41:47,902: INFO: data_transformation: Train data shape: (41510, 6)]
+[2025-12-19 19:41:47,902: INFO: data_transformation: Test data shape: (10378, 6)]
+[2025-12-19 19:41:47,917: INFO: main: >>>>>> stage Data Transformation stage completed <<<<<<
+
+x==========x]
+[2025-12-19 19:42:12,499: INFO: data_ingestion: artifacts/data_ingestion/data.csv download! with following info: 
+Server: nginx
+Date: Fri, 19 Dec 2025 14:10:56 GMT
+Content-Type: text/csv; charset=utf-8
+Transfer-Encoding: chunked
+Connection: close
+Access-Control-Allow-Origin: *
+Content-disposition: attachment; filename=Electric_Vehicle_Population_Data.csv
+Cache-Control: public, must-revalidate, max-age=21600
+ETag: W/"Z29sZi4zNDQ3NV8xNF8xMDE2M1ZRb3lidzJ5X3FKYU9uMnh0MGpBUHVQZHU0---gzip72JF7wU3YiRip0eVe3ZyKVhfRns--gzip--gzip"
+X-SODA2-Data-Out-Of-Date: false
+X-SODA2-Truth-Last-Modified: Tue, 16 Dec 2025 23:40:39 GMT
+X-SODA2-Secondary-Last-Modified: Tue, 16 Dec 2025 23:40:39 GMT
+Last-Modified: Tue, 16 Dec 2025 23:40:39 GMT
+Vary: Accept-Encoding
+Age: 0
+X-Socrata-Region: aws-us-east-1-fedramp-prod
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+X-Socrata-RequestId: fe86db22f6fe7111374b50a54b919b25
+
+]
+[2025-12-19 19:42:12,503: INFO: data_ingestion: File is not a zip file, skipping extraction.]
+[2025-12-19 19:42:12,504: INFO: main: >>>>>> stage Data Ingestion stage completed <<<<<<
+
+x==========x]
+[2025-12-19 19:42:45,432: INFO: main: >>>>>> stage Data Ingestion stage started <<<<<<]
+[2025-12-19 19:42:45,438: INFO: data_ingestion: File already exists of size: ~ 63616 KB]
+[2025-12-19 19:42:45,439: INFO: data_ingestion: File is not a zip file, skipping extraction.]
+[2025-12-19 19:42:45,439: INFO: main: >>>>>> stage Data Ingestion stage completed <<<<<<
+
+x==========x]
+[2025-12-19 19:42:45,439: INFO: main: >>>>>> stage Data Transformation stage started <<<<<<]
+[2025-12-19 19:42:46,967: INFO: data_transformation: Read data completed]
+[2025-12-19 19:42:46,968: INFO: data_transformation: Obtaining preprocessing object]
+[2025-12-19 19:42:47,344: INFO: data_transformation: Saved preprocessing object.]
+[2025-12-19 19:42:47,348: INFO: data_transformation: Splitting data into train and test sets]
+[2025-12-19 19:42:47,585: INFO: data_transformation: Data transformation completed]
+[2025-12-19 19:42:47,585: INFO: data_transformation: Train data shape: (80086, 6)]
+[2025-12-19 19:42:47,585: INFO: data_transformation: Test data shape: (20022, 6)]
+[2025-12-19 19:42:47,606: INFO: main: >>>>>> stage Data Transformation stage completed <<<<<<
+
+x==========x]
+[2025-12-19 19:43:27,984: INFO: main: >>>>>> stage Data Ingestion stage started <<<<<<]
+[2025-12-19 19:43:27,990: INFO: data_ingestion: File already exists of size: ~ 63616 KB]
+[2025-12-19 19:43:27,991: INFO: data_ingestion: File is not a zip file, skipping extraction.]
+[2025-12-19 19:43:27,991: INFO: main: >>>>>> stage Data Ingestion stage completed <<<<<<
+
+x==========x]
+[2025-12-19 19:43:27,991: INFO: main: >>>>>> stage Data Transformation stage started <<<<<<]
+[2025-12-19 19:43:29,406: INFO: data_transformation: Read data completed]
+[2025-12-19 19:43:29,406: INFO: data_transformation: Obtaining preprocessing object]
+[2025-12-19 19:43:29,772: INFO: data_transformation: Saved preprocessing object.]
+[2025-12-19 19:43:29,776: INFO: data_transformation: Splitting data into train and test sets]
+[2025-12-19 19:43:30,193: INFO: data_transformation: Data transformation completed]
+[2025-12-19 19:43:30,193: INFO: data_transformation: Train data shape: (80086, 6)]
+[2025-12-19 19:43:30,193: INFO: data_transformation: Test data shape: (20022, 6)]
+[2025-12-19 19:43:30,214: INFO: main: >>>>>> stage Data Transformation stage completed <<<<<<
+
+x==========x]
+[2025-12-19 19:43:30,214: INFO: main: >>>>>> stage Model Training stage started <<<<<<]
+[2025-12-19 19:43:30,300: INFO: model_trainer: Training Model...]
+[2025-12-19 19:43:44,579: INFO: model_trainer: Model saved at artifacts/model_trainer\model.pkl]
+[2025-12-19 19:43:44,821: INFO: model_trainer: Model Evaluation Metrics: RMSE=5.802387749173118, R2=0.9964449229851174]
+[2025-12-19 19:43:44,825: INFO: main: >>>>>> stage Model Training stage completed <<<<<<
+
+x==========x]
+[2025-12-19 19:44:12,891: INFO: _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.189.223.30:5000]
+[2025-12-19 19:44:12,891: INFO: _internal: [33mPress CTRL+C to quit[0m]
+[2025-12-19 19:45:44,924: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 19:45:44] "GET / HTTP/1.1" 200 -]
+[2025-12-19 19:46:03,678: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 19:46:03] "GET / HTTP/1.1" 200 -]
+[2025-12-19 19:46:03,681: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 19:46:03] "GET / HTTP/1.1" 200 -]
+[2025-12-19 19:46:03,937: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 19:46:03] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -]
+[2025-12-19 19:50:09,900: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 19:50:09] "GET / HTTP/1.1" 200 -]
+[2025-12-19 19:50:09,905: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 19:50:09] "GET / HTTP/1.1" 200 -]
+[2025-12-19 19:50:40,481: WARNING: prediction_pipeline: Unseen label in Make: y contains previously unseen labels: 'tesla']
+[2025-12-19 19:50:40,482: WARNING: prediction_pipeline: Unseen label in Model: y contains previously unseen labels: '2']
+[2025-12-19 19:50:40,496: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 19:50:40] "POST /predict HTTP/1.1" 200 -]
+[2025-12-19 20:01:38,398: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 20:01:38] "GET / HTTP/1.1" 200 -]
+[2025-12-19 20:01:38,404: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 20:01:38] "GET / HTTP/1.1" 200 -]
+[2025-12-19 20:03:41,167: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 20:03:41] "GET / HTTP/1.1" 200 -]
+[2025-12-19 20:03:41,170: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 20:03:41] "GET / HTTP/1.1" 200 -]
+[2025-12-19 20:05:51,686: INFO: app: Dropdown data loaded successfully.]
+[2025-12-19 20:05:51,734: INFO: _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.189.223.30:5000]
+[2025-12-19 20:05:51,734: INFO: _internal: [33mPress CTRL+C to quit[0m]
+[2025-12-19 20:06:52,788: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 20:06:52] "GET / HTTP/1.1" 200 -]
+[2025-12-19 20:07:28,919: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 20:07:28] "GET / HTTP/1.1" 200 -]
+[2025-12-19 20:07:28,923: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 20:07:28] "GET / HTTP/1.1" 200 -]
+[2025-12-19 20:12:43,596: INFO: app: Dropdown data loaded successfully globally.]
+[2025-12-19 20:12:43,640: INFO: _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.189.223.30:5000]
+[2025-12-19 20:12:43,640: INFO: _internal: [33mPress CTRL+C to quit[0m]
+[2025-12-19 20:13:49,440: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 20:13:49] "GET / HTTP/1.1" 200 -]
+[2025-12-19 20:15:51,347: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 20:15:51] "GET / HTTP/1.1" 200 -]
+[2025-12-19 20:15:51,358: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 20:15:51] "GET / HTTP/1.1" 200 -]
+[2025-12-19 20:19:56,624: INFO: app: Dropdown data loaded successfully globally.]
+[2025-12-19 20:19:56,687: INFO: _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.189.223.30:5000]
+[2025-12-19 20:19:56,687: INFO: _internal: [33mPress CTRL+C to quit[0m]
+[2025-12-19 20:22:01,266: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 20:22:01] "GET / HTTP/1.1" 200 -]
+[2025-12-19 20:22:01,279: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 20:22:01] "GET / HTTP/1.1" 200 -]
+[2025-12-19 20:26:47,233: INFO: app: Dropdown data loaded successfully globally.]
+[2025-12-19 20:26:47,397: INFO: _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.189.223.30:5000]
+[2025-12-19 20:26:47,398: INFO: _internal: [33mPress CTRL+C to quit[0m]
+[2025-12-19 20:37:20,684: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 20:37:20] "GET / HTTP/1.1" 200 -]
+[2025-12-19 20:42:53,606: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 20:42:53] "GET / HTTP/1.1" 200 -]
+[2025-12-19 20:42:53,616: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 20:42:53] "GET / HTTP/1.1" 200 -]
+[2025-12-19 20:42:59,453: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 20:42:59] "GET / HTTP/1.1" 200 -]
+[2025-12-19 20:42:59,758: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 20:42:59] "GET / HTTP/1.1" 200 -]
+[2025-12-19 20:48:56,605: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 20:48:56] "GET / HTTP/1.1" 200 -]
+[2025-12-19 20:48:56,611: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 20:48:56] "GET / HTTP/1.1" 200 -]
+[2025-12-19 20:56:38,761: INFO: app: Dropdown data loaded successfully globally.]
+[2025-12-19 20:56:39,015: INFO: _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.189.223.30:5000]
+[2025-12-19 20:56:39,015: INFO: _internal: [33mPress CTRL+C to quit[0m]
+[2025-12-19 21:00:04,379: INFO: _internal: 127.0.0.1 - - [19/Dec/2025 21:00:04] "GET / HTTP/1.1" 200 -]
+[2025-12-19 21:22:57,475: INFO: app: Dropdown data loaded successfully globally.]
+[2025-12-19 21:22:57,530: INFO: _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.64.67.30:5000]
+[2025-12-19 21:22:57,530: INFO: _internal: [33mPress CTRL+C to quit[0m]
+[2025-12-19 21:30:43,423: INFO: app: Dropdown data loaded successfully globally.]
+[2025-12-19 21:30:43,462: INFO: _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.64.67.30:5000]
+[2025-12-19 21:30:43,462: INFO: _internal: [33mPress CTRL+C to quit[0m]
+[2025-12-19 21:37:15,521: INFO: app: Dropdown data loaded successfully globally.]
+[2025-12-19 21:37:15,589: INFO: _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.64.67.30:5000]
+[2025-12-19 21:37:15,589: INFO: _internal: [33mPress CTRL+C to quit[0m]
