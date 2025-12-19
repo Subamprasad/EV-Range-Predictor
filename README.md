@@ -4,8 +4,6 @@
 
 Welcome to the **Electric Vehicle Range Prediction** project! This application is designed to help EV owners and enthusiasts accurately estimate the driving range of various electric vehicles based on real-world data.
 
-**Data Source**: This project harnesses the comprehensive [Washington State EV Population Data](https://data.wa.gov/api/views/f6w7-q2d2/rows.csv?accessType=DOWNLOAD) to drive its predictions.
-
 Built with a focus on precision and user experience, this tool leverages Machine Learning to analyze key vehicle characteristics—like Make, Model, Year, and EV Type—to predict how far you can go on a single charge.
 
 ---
@@ -101,10 +99,4 @@ Open your web browser and go to: `http://localhost:5000`
 
 ---
 
-## 👨‍💻 Author
-
-**Subam Prasad**  
-*ML Consultant & Developer*
-
-I designed and developed this end-to-end MLOps solution to demonstrate the power of combining data science with intuitive software engineering. Feel free to explore, fork, and contribute!
-
+**Data Source**: This project harnesses the comprehensive [Washington State EV Population Data](https://data.wa.gov/api/views/f6w7-q2d2/rows.csv?accessType=DOWNLOAD) to drive its predictions.
