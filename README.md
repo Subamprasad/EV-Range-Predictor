@@ -1,19 +1,53 @@
 # Electric Vehicle Range Prediction
 
-This project aims to predict the electric range of vehicles using the Washington State Electric Vehicle Population Data.
+A Machine Learning project to predict the electric range of BEV and PHEV vehicles using Washington State EV population data.
 
-## Dataset
-The dataset is sourced from [Washington State Department of Licensing](https://data.wa.gov/api/views/f6w7-q2d2/rows.csv?accessType=DOWNLOAD).
-It contains information about Battery Electric Vehicles (BEVs) and Plug-in Hybrid Electric Vehicles (PHEVs).
+## 🚀 Features
+- **Data Ingestion & Transformation**: Automated pipelines for processing raw data.
+- **Model Training**: Regression model training with optimized hyperparameters.
+- **Web Interface**: Interactive Flask application with cascading dropdowns for real-time predictions.
+- **CI/CD**: GitHub Actions workflow included.
 
-## Project Structure
-- `data/`: Contains the raw dataset.
-- `notebooks/`: Jupyter notebooks for EDA and modeling.
-- `src/`: Source code for pipelines (to be implemented).
+## 📂 Project Structure
+```
+├── .github/workflows   # CI/CD Configurations
+├── config/             # Configuration files
+├── src/                # Source code for pipelines and components
+├── static/             # CSS and JS assets
+├── templates/          # HTML templates
+├── app.py              # Flask Web Application entry point
+├── main.py             # Model Training entry point
+└── requirements.txt    # Project dependencies
+```
 
-## Usage
-1. Install dependencies:
+## 🛠️ Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Subamprasad/EV-Range-Predictor.git
+   cd EV-Range-Predictor
    ```
+
+2. **Install dependencies**
+   ```bash
    pip install -r requirements.txt
    ```
-2. Run the notebook in `notebooks/ev_range_prediction.ipynb`.
+
+## 🏃‍♂️ Usage
+
+### 1. Train the Model
+To run the full data pipeline and train a new model:
+```bash
+python main.py
+```
+*This will generate artifacts in the `artifacts/` directory.*
+
+### 2. Run the Web App
+To start the prediction interface:
+```bash
+python app.py
+```
+Open your browser at `http://localhost:5000`.
+
+## 📊 Dataset
+Sourced from [Washington State Department of Licensing](https://data.wa.gov/api/views/f6w7-q2d2/rows.csv?accessType=DOWNLOAD).
