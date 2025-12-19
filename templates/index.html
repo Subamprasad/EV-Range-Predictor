@@ -257,209 +257,53 @@
     </div>
 
     <script>
-        // Data Context
-        const dataMap = {{ data_map | tojson | safe }};
-        const evTypes = {{ ev_types | tojson | safe }};
-        const districts = {{ districts | tojson | safe }};
+        const dataMap = {{ data_map|default ({}) | tojson | safe }}, evTypes = {{ ev_types |default ([]) | tojson | safe }}, districts = {{ districts |default ([]) | tojson | safe }};
+        const preSelected = { make: "{{ selected_make }}", model: "{{ selected_model }}", year: "{{ selected_year }}", evType: "{{ selected_ev_type }}", district: "{{ selected_district }}" };
 
-        const preSelected = {
-            make: "{{ selected_make }}",
-            model: "{{ selected_model }}",
-            year: "{{ selected_year }}",
-            evType: "{{ selected_ev_type }}",
-            district: "{{ selected_district }}"
-        };
-
-        // --- Reusable Dropdown Logic ---
         class CustomDropdown {
-            constructor(inputId, listId, selectId, options = [], onSelectCallback = null) {
-                this.input = document.getElementById(inputId);
-                this.list = document.getElementById(listId);
-                this.select = document.getElementById(selectId);
-                this.options = options;
-                this.onSelectCallback = onSelectCallback;
-                this.init();
-            }
-
+            constructor(a, b, c, d = [], e = null) { this.input = document.getElementById(a), this.list = document.getElementById(b), this.select = document.getElementById(c), this.options = d, this.onSelect = e, this.init() }
             init() {
-                // Populate List
-                this.renderList(this.options);
-
-                // Event: Toggle List on Click
-                this.input.addEventListener('click', (e) => {
-                    if (this.input.disabled) return;
-                    e.stopPropagation(); // Prevent closing immediately
-                    this.closeAllDropdowns(this.list); // Close others
-
-                    if (this.list.classList.contains('show')) {
-                        this.list.classList.remove('show');
-                        this.input.setAttribute('readonly', true);
-                    } else {
-                        this.list.classList.add('show');
-                        this.input.removeAttribute('readonly');
-                        this.input.focus();
-                    }
-                    this.renderList(this.options);
-                });
-
-                // Event: Typing Filter
-                this.input.addEventListener('input', (e) => {
-                    const query = e.target.value.toLowerCase();
-                    const filtered = this.options.filter(opt => String(opt).toLowerCase().includes(query));
-                    this.renderList(filtered);
-                    this.list.classList.add('show');
-                });
-
-                // Close on outside click
-                document.addEventListener('click', (e) => {
-                    if (!this.input.contains(e.target) && !this.list.contains(e.target)) {
-                        this.list.classList.remove('show');
-                        // Reset to readonly to look like a "box" again until clicked
-                        this.input.setAttribute('readonly', true);
+                this.render(this.options);
+                this.input.addEventListener('click', e => {
+                    if (!this.input.disabled) {
+                        e.stopPropagation(), this.closeAll(this.list);
+                        this.list.classList.toggle('show') ? (this.input.removeAttribute('readonly'), this.input.focus()) : this.input.setAttribute('readonly', !0); this.render(this.options)
                     }
                 });
+                this.input.addEventListener('input', e => { const t = e.target.value.toLowerCase(); this.render(this.options.filter(o => String(o).toLowerCase().includes(t))), this.list.classList.add('show') });
+                document.addEventListener('click', e => { this.input.contains(e.target) || this.list.contains(e.target) || (this.list.classList.remove('show'), this.input.setAttribute('readonly', !0)) })
             }
-
-            renderList(items) {
+            render(t) {
                 this.list.innerHTML = '';
-                if (items.length === 0) {
-                    const div = document.createElement('div');
-                    div.className = 'dropdown-item text-slate-500 cursor-default';
-                    div.textContent = 'No results';
-                    this.list.appendChild(div);
-                } else {
-                    items.forEach(item => {
-                        const div = document.createElement('div');
-                        div.className = 'dropdown-item';
-                        div.textContent = item;
-
-                        // Highlight selected
-                        if (String(item) === this.input.value) {
-                            div.classList.add('selected');
-                        }
-
-                        div.onclick = (e) => {
-                            e.stopPropagation();
-                            this.selectItem(item);
-                        };
-                        this.list.appendChild(div);
-                    });
-                }
+                if (!t.length) return this.list.innerHTML = '<div class="dropdown-item text-slate-500 cursor-default">No results</div>';
+                t.forEach(e => { const s = document.createElement('div'); s.className = 'dropdown-item' + (String(e) === this.input.value ? ' selected' : ''), s.textContent = e, s.onclick = i => { i.stopPropagation(), this.selectItem(e) }, this.list.appendChild(s) })
             }
-
-            selectItem(value) {
-                this.input.value = value;
-                this.list.classList.remove('show');
-                this.input.setAttribute('readonly', true); // Lock it back
-
-                // Update hidden select
-                this.updateHiddenSelect(value);
-
-                if (this.onSelectCallback) this.onSelectCallback(value);
-            }
-
-            updateHiddenSelect(value) {
-                this.select.innerHTML = ''; // Clear prev
-                const opt = document.createElement('option');
-                opt.value = value;
-                opt.text = value;
-                opt.selected = true;
-                this.select.appendChild(opt);
-            }
-
-            setOptions(newOptions) {
-                this.options = newOptions;
-                this.renderList(newOptions);
-            }
-
-            enable() {
-                this.input.disabled = false;
-                this.input.classList.remove('opacity-50', 'cursor-not-allowed');
-                this.input.placeholder = "Select or Type...";
-            }
-
-            disable() {
-                this.input.disabled = true;
-                this.input.classList.add('opacity-50', 'cursor-not-allowed');
-                this.input.value = '';
-                this.input.placeholder = "Select Previous First";
-                this.options = [];
-                this.renderList([]);
-            }
-
-            setValue(val) {
-                if (val && val !== 'None' && val !== '0' && val !== '0.0') {
-                    this.input.value = val;
-                    this.updateHiddenSelect(val);
-                }
-            }
-
-            closeAllDropdowns(exclude) {
-                document.querySelectorAll('.dropdown-list').forEach(list => {
-                    if (list !== exclude) list.classList.remove('show');
-                });
-            }
+            selectItem(e) { this.input.value = e, this.list.classList.remove('show'), this.input.setAttribute('readonly', !0), this.select.innerHTML = `<option value="${e}" selected>${e}</option>`, this.onSelect && this.onSelect(e) }
+            setOptions(e) { this.options = e, this.render(e) }
+            enable() { this.input.disabled = !1, this.input.classList.remove('opacity-50', 'cursor-not-allowed'), this.input.placeholder = "Select..." }
+            disable() { this.input.disabled = !0, this.input.classList.add('opacity-50', 'cursor-not-allowed'), this.input.value = '', this.input.placeholder = "Select Previous...", this.options = [], this.render([]) }
+            setValue(e) { e && "None" !== e && (this.input.value = e, this.select.innerHTML = `<option value="${e}" selected>${e}</option>`) }
+            closeAll(e) { document.querySelectorAll('.dropdown-list').forEach(t => { t !== e && t.classList.remove('show') }) }
         }
 
-        // --- Initialization ---
+        const makeD = new CustomDropdown('makeInput', 'makeList', 'makeSelect', Object.keys(dataMap).sort(), e => { modelD.disable(), yearD.disable(); if (dataMap[e]) { modelD.setOptions(Object.keys(dataMap[e]).sort()), modelD.enable() } });
+        const modelD = new CustomDropdown('modelInput', 'modelList', 'modelSelect', [], e => { yearD.disable(); const m = document.getElementById('makeSelect').value; if (m && dataMap[m] && dataMap[m][e]) { yearD.setOptions(dataMap[m][e]), yearD.enable() } });
+        const yearD = new CustomDropdown('yearInput', 'yearList', 'yearSelect', []);
+        const evD = new CustomDropdown('evTypeInput', 'evTypeList', 'evTypeSelect', evTypes);
+        const distD = new CustomDropdown('districtInput', 'districtList', 'districtSelect', districts);
 
-        const makeDropdown = new CustomDropdown('makeInput', 'makeList', 'makeSelect', Object.keys(dataMap).sort(), onMakeChange);
-        const modelDropdown = new CustomDropdown('modelInput', 'modelList', 'modelSelect', [], onModelChange);
-        const yearDropdown = new CustomDropdown('yearInput', 'yearList', 'yearSelect', []);
-
-        const evTypeDropdown = new CustomDropdown('evTypeInput', 'evTypeList', 'evTypeSelect', evTypes);
-        const districtDropdown = new CustomDropdown('districtInput', 'districtList', 'districtSelect', districts);
-
-        // --- Cascading Logic ---
-
-        function onMakeChange(selectedMake) {
-            // Reset downstream
-            modelDropdown.disable();
-            yearDropdown.disable();
-
-            if (dataMap[selectedMake]) {
-                const models = Object.keys(dataMap[selectedMake]).sort();
-                modelDropdown.setOptions(models);
-                modelDropdown.enable();
-            }
-        }
-
-        function onModelChange(selectedModel) {
-            const selectedMake = document.getElementById('makeSelect').value;
-            yearDropdown.disable();
-
-            if (selectedMake && dataMap[selectedMake] && dataMap[selectedMake][selectedModel]) {
-                const years = dataMap[selectedMake][selectedModel];
-                yearDropdown.setOptions(years);
-                yearDropdown.enable();
-            }
-        }
-
-        // --- Restore Previous State ---
-        if (preSelected.make && preSelected.make !== "None") {
-            makeDropdown.setValue(preSelected.make);
-            // Trigger make change manually to populate models
+        if (preSelected.make && "None" !== preSelected.make) {
+            makeD.setValue(preSelected.make);
             if (dataMap[preSelected.make]) {
-                const models = Object.keys(dataMap[preSelected.make]).sort();
-                modelDropdown.setOptions(models);
-                modelDropdown.enable();
-
-                if (preSelected.model && preSelected.model !== "None") {
-                    modelDropdown.setValue(preSelected.model);
-
-                    // Trigger model change
-                    const years = dataMap[preSelected.make][preSelected.model];
-                    if (years) {
-                        yearDropdown.setOptions(years);
-                        yearDropdown.enable();
-                        yearDropdown.setValue(preSelected.year);
-                    }
+                modelD.setOptions(Object.keys(dataMap[preSelected.make]).sort()), modelD.enable();
+                if (preSelected.model && "None" !== preSelected.model) {
+                    modelD.setValue(preSelected.model);
+                    const y = dataMap[preSelected.make][preSelected.model];
+                    y && (yearD.setOptions(y), yearD.enable(), yearD.setValue(preSelected.year))
                 }
             }
         }
-
-        evTypeDropdown.setValue(preSelected.evType);
-        districtDropdown.setValue(preSelected.district);
+        evD.setValue(preSelected.evType), distD.setValue(preSelected.district);
     </script>
 </body>
 
