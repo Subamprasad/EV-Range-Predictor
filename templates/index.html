@@ -256,9 +256,17 @@
         {% endif %}
     </div>
 
+    <!-- Hidden Data Store to prevent IDE Syntax Errors with Jinja -->
+    <div id="app-data" style="display:none;" data-map='{{ data_map|default({})|tojson|safe }}'
+        data-ev-types='{{ ev_types|default([])|tojson|safe }}' data-districts='{{ districts|default([])|tojson|safe }}'
+        data-pre-make="{{ selected_make }}" data-pre-model="{{ selected_model }}" data-pre-year="{{ selected_year }}"
+        data-pre-ev-type="{{ selected_ev_type }}" data-pre-district="{{ selected_district }}">
+    </div>
+
     <script>
-        const dataMap = {{ data_map|default ({}) | tojson | safe }}, evTypes = {{ ev_types |default ([]) | tojson | safe }}, districts = {{ districts |default ([]) | tojson | safe }};
-        const preSelected = { make: "{{ selected_make }}", model: "{{ selected_model }}", year: "{{ selected_year }}", evType: "{{ selected_ev_type }}", district: "{{ selected_district }}" };
+        const d = document.getElementById('app-data').dataset;
+        const dataMap = JSON.parse(d.map), evTypes = JSON.parse(d.evTypes), districts = JSON.parse(d.districts);
+        const preSelected = { make: d.preMake, model: d.preModel, year: d.preYear, evType: d.preEvType, district: d.preDistrict };
 
         class CustomDropdown {
             constructor(a, b, c, d = [], e = null) { this.input = document.getElementById(a), this.list = document.getElementById(b), this.select = document.getElementById(c), this.options = d, this.onSelect = e, this.init() }
